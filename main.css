@@ -47,8 +47,6 @@ img {
     font-size: 3em;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight:  bold;
-
-    
 }
 
 .meatball-count p {
@@ -90,6 +88,21 @@ img {
     scale: 1.05;
 }
 
+.fork {
+    z-index: -10px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100svw;
+    height: 100svh;
+    display: grid;
+    place-items: center;
+}
+
+.fork img {
+    animation: orbit 8s linear infinite, forkJab 1s linear infinite;
+}
+
 @keyframes floatRotate {
     0%,100% {
         rotate: 3deg;
@@ -106,4 +119,26 @@ img {
     50% {
         translate: 0px -5px;
     }
+}
+
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes forkJab {
+    0%, 70%, 100% {
+        transform-origin: -160px;
+        translate: 200px 0px;
+    }
+
+    85% {
+        transform-origin: -140px;
+        translate: 180px 0px;
+    }
+
 }
