@@ -26,6 +26,9 @@ body {
 
 .shop {
     grid-area: "shop";
+    z-index: 1;
+    display: grid;
+    place-items: center;
 }
 
 img {
@@ -80,16 +83,23 @@ img {
     transition: scale 0.05s ease-in-out;
 }
 
-.click-button:active img {
-    scale: 1.05;
+button:active img {
+    scale: 0.95;
 }
 
 .clicked {
-    scale: 1.05;
+    scale: 0.95;
+}
+
+.buy-fork-button {
+    background-color: transparent;
+    border: 0px;
+    outline: 0px;
+    cursor: pointer;
 }
 
 .fork {
-    z-index: -10px;
+    z-index: -10;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -97,10 +107,6 @@ img {
     height: 100svh;
     display: grid;
     place-items: center;
-}
-
-.fork img {
-    animation: orbit 8s linear infinite, forkJab 1s linear infinite;
 }
 
 @keyframes floatRotate {
