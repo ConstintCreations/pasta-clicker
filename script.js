@@ -11,6 +11,7 @@ clickButton.addEventListener("click", () => {
 
 const forkButton = document.querySelector(".buy-fork-button");
 const forkElementContainer = document.querySelector(".fork-container");
+const buyForkCostElement = document.querySelector(".buy-fork-button p strong");
 
 const maxForks = 40;
 const forkOrbitTime = 8;
@@ -19,6 +20,14 @@ const forkJabTime = 1;
 let forkInterval = null;
 
 forkButton.addEventListener("click", () => {
+
+    if (meatballs >= Math.floor(10 * Math.pow(1.5, forks))) {
+        meatballs -= Math.floor(10 * Math.pow(1.5, forks));
+        meatballsText.textContent = meatballs;
+    } else {
+        return;
+    }
+
     if (forks >= maxForks) return;
     let orbitDelay = 0;
     let jabDelay = -0.85;
@@ -46,4 +55,5 @@ forkButton.addEventListener("click", () => {
     }
 
     forks++;
+    buyForkCostElement.textContent = Math.floor(10 * Math.pow(1.5, forks));
 }); 

@@ -52,7 +52,7 @@ img {
     font-weight:  bold;
 }
 
-.meatball-count p {
+.meatball-count p, .buy-fork-button p strong {
     height: 65px;
     width: 100%;
     top: 0px;
@@ -83,7 +83,7 @@ img {
     transition: scale 0.05s ease-in-out;
 }
 
-button:active img {
+button:active > img {
     scale: 0.95;
 }
 
@@ -96,6 +96,36 @@ button:active img {
     border: 0px;
     outline: 0px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0px 40px;
+}
+
+.buy-fork-button > img {
+    align-self: center;
+}
+
+.buy-fork-button p {
+    margin-top: -30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    gap: 10px;
+
+    color: saddlebrown;
+    font-size: 3em;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight:  bold;
+
+    background-color: blanchedalmond;
+    border-radius: 30px;
+    height: 75px;
+    border: 5px solid burlywood;
+    padding: 0px 10px;
+    
+    position: relative;
 }
 
 .fork {
