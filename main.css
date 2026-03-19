@@ -111,7 +111,11 @@ img {
     transition: scale 0.05s ease-in-out;
 }
 
-button:active>img {
+.click-button:active img {
+    scale: 0.95;
+}
+
+.shop-button:active {
     scale: 0.95;
 }
 
@@ -130,12 +134,28 @@ button:active>img {
     padding: 0px 40px;
 }
 
-.shop-button>img {
+.shop-button div img {
     align-self: center;
 }
 
-.buy-fork-button p {
-    margin-top: -15px;
+.shop-button>div {
+    display: flex;
+    gap: 20px;
+}
+
+.shop-button>div>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border: 5px solid burlywood;
+    background-color: blanchedalmond;
+    border-radius: 30px;
+    margin-bottom: 10px;
+    padding: 0px 10px;
+    width: 100%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    color: saddlebrown;
 }
 
 .shop-button p {

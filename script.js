@@ -4,7 +4,7 @@ const multiplierText = document.querySelector(".meatball-count div strong");
 
 let meatballs = 0;
 let forks = 0;
-let clickValue = 1;
+let clickValue = 0.5;
 let multiplier = 1;
 
 clickButton.addEventListener("click", () => {
@@ -23,6 +23,7 @@ function displayMultiplier() {
 const forkButton = document.querySelector(".buy-fork-button");
 const forkElementContainer = document.querySelector(".fork-container");
 const buyForkCostElement = document.querySelector(".buy-fork-button p strong");
+const forkOwnedCountElement = document.querySelector(".buy-fork-button div div h3");
 
 const maxForks = 40;
 const forkOrbitTime = 8;
@@ -62,38 +63,42 @@ forkButton.addEventListener("click", () => {
 
     if (forkInterval == null) {
         forkInterval = setInterval(() => {
-            meatballs += forks*multiplier;
+            meatballs += forks*clickValue*multiplier;
             displayMeatballCount();
         }, 1000);
     }
 
     forks++;
+    forkOwnedCountElement.textContent = forks + "/" + maxForks;
     buyForkCostElement.textContent = Math.floor(50 * Math.pow(1.75, forks));
 }); 
 
 const clickUpgradeButton = document.querySelector(".buy-click-upgrade-button");
 const clickUpgradeCostElement = document.querySelector(".buy-click-upgrade-button p strong");
+const clickValueOwnedCountElement = document.querySelector(".buy-click-upgrade-button div div h3");
 
-const maxClickUpgradeCount = 48;
+const maxClickUpgradeCount = 50;
 const clickValueUpgradeAmount = 0.5;
-let clickUpgradeCount = 0;
+let clickUpgradeCount = 1;
 
 clickUpgradeButton.addEventListener("click", () => {
     if (clickUpgradeCount >= maxClickUpgradeCount) return;
 
-    const cost = Math.floor(10 * Math.pow(1.5, clickUpgradeCount));
+    const cost = Math.floor((6+2/3) * Math.pow(1.5, clickUpgradeCount));
 
     if (meatballs >= cost) {
         meatballs -= cost;
         clickValue += clickValueUpgradeAmount;
         displayMeatballCount();
         clickUpgradeCount++;
-        clickUpgradeCostElement.textContent = Math.floor(10 * Math.pow(1.5, clickUpgradeCount));
+        clickValueOwnedCountElement.textContent = clickUpgradeCount + "/" + maxClickUpgradeCount;
+        clickUpgradeCostElement.textContent = Math.floor((6+2/3) * Math.pow(1.5, clickUpgradeCount));
     }
 });
 
 const multiplierUpgradeButton = document.querySelector(".buy-multiplier-upgrade-button");
 const multiplierUpgradeCostElement = document.querySelector(".buy-multiplier-upgrade-button p strong");
+const multiplierUpgradeOwnedCountElement = document.querySelector(".buy-multiplier-upgrade-button div div h3");
 
 const maxMultiplierUpgradeCount = 20;
 const multiplierValueUpgradeAmount = 0.1;
@@ -110,6 +115,7 @@ multiplierUpgradeButton.addEventListener("click", () => {
         displayMultiplier();
         displayMeatballCount();
         multiplierUpgradeCount++;
+        multiplierUpgradeOwnedCountElement.textContent = multiplierUpgradeCount + "/" + maxMultiplierUpgradeCount;
         multiplierUpgradeCostElement.textContent = Math.floor(100 * Math.pow(2, multiplierUpgradeCount));
     }
 });
