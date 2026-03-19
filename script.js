@@ -1,17 +1,23 @@
 const clickButton = document.querySelector(".click-button");
 const meatballsText = document.querySelector(".meatball-count p");
+const multiplierText = document.querySelector(".meatball-count div strong");
 
 let meatballs = 0;
 let forks = 0;
 let clickValue = 1;
+let multiplier = 1;
 
 clickButton.addEventListener("click", () => {
-    meatballs += clickValue;
+    meatballs += clickValue*multiplier;
     displayMeatballCount();
 });
 
 function displayMeatballCount() {
     meatballsText.textContent = meatballs.toFixed(0);
+}
+
+function displayMultiplier() {
+    multiplierText.textContent = "x" + multiplier.toFixed(2);
 }
 
 const forkButton = document.querySelector(".buy-fork-button");
@@ -56,7 +62,7 @@ forkButton.addEventListener("click", () => {
 
     if (forkInterval == null) {
         forkInterval = setInterval(() => {
-            meatballs += forks;
+            meatballs += forks*multiplier;
             displayMeatballCount();
         }, 1000);
     }
@@ -68,7 +74,7 @@ forkButton.addEventListener("click", () => {
 const clickUpgradeButton = document.querySelector(".buy-click-upgrade-button");
 const clickUpgradeCostElement = document.querySelector(".buy-click-upgrade-button p strong");
 
-const maxClickUpgradeCount = 50;
+const maxClickUpgradeCount = 48;
 const clickValueUpgradeAmount = 0.5;
 let clickUpgradeCount = 0;
 
@@ -84,4 +90,26 @@ clickUpgradeButton.addEventListener("click", () => {
         clickUpgradeCount++;
         clickUpgradeCostElement.textContent = Math.floor(10 * Math.pow(1.5, clickUpgradeCount));
     }
-});console.log(cost);
+});
+
+const multiplierUpgradeButton = document.querySelector(".buy-multiplier-upgrade-button");
+const multiplierUpgradeCostElement = document.querySelector(".buy-multiplier-upgrade-button p strong");
+
+const maxMultiplierUpgradeCount = 20;
+const multiplierValueUpgradeAmount = 0.1;
+let multiplierUpgradeCount = 0;
+
+multiplierUpgradeButton.addEventListener("click", () => {
+    if (multiplierUpgradeCount >= maxMultiplierUpgradeCount) return;
+
+    const cost = Math.floor(100 * Math.pow(2, multiplierUpgradeCount));
+
+    if (meatballs >= cost) {
+        meatballs -= cost;
+        multiplier += multiplierValueUpgradeAmount;
+        displayMultiplier();
+        displayMeatballCount();
+        multiplierUpgradeCount++;
+        multiplierUpgradeCostElement.textContent = Math.floor(100 * Math.pow(2, multiplierUpgradeCount));
+    }
+});
