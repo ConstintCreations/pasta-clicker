@@ -3,11 +3,16 @@ const meatballsText = document.querySelector(".meatball-count p");
 
 let meatballs = 0;
 let forks = 0;
+let clickValue = 1;
 
 clickButton.addEventListener("click", () => {
-    meatballs++;
-    meatballsText.textContent = meatballs;
+    meatballs += clickValue;
+    displayMeatballCount();
 });
+
+function displayMeatballCount() {
+    meatballsText.textContent = meatballs.toFixed(0);
+}
 
 const forkButton = document.querySelector(".buy-fork-button");
 const forkElementContainer = document.querySelector(".fork-container");
@@ -20,15 +25,17 @@ const forkJabTime = 1;
 let forkInterval = null;
 
 forkButton.addEventListener("click", () => {
+    if (forks >= maxForks) return;
 
-    if (meatballs >= Math.floor(10 * Math.pow(1.5, forks))) {
-        meatballs -= Math.floor(10 * Math.pow(1.5, forks));
-        meatballsText.textContent = meatballs;
+    const cost = Math.floor(50 * Math.pow(1.75, forks));
+
+    if (meatballs >= cost) {
+        meatballs -= cost;
+        displayMeatballCount();
     } else {
         return;
     }
 
-    if (forks >= maxForks) return;
     let orbitDelay = 0;
     let jabDelay = -0.85;
     if (forks > 0) {
@@ -50,10 +57,31 @@ forkButton.addEventListener("click", () => {
     if (forkInterval == null) {
         forkInterval = setInterval(() => {
             meatballs += forks;
-            meatballsText.textContent = meatballs;
+            displayMeatballCount();
         }, 1000);
     }
 
     forks++;
-    buyForkCostElement.textContent = Math.floor(10 * Math.pow(1.5, forks));
+    buyForkCostElement.textContent = Math.floor(50 * Math.pow(1.75, forks));
 }); 
+
+const clickUpgradeButton = document.querySelector(".buy-click-upgrade-button");
+const clickUpgradeCostElement = document.querySelector(".buy-click-upgrade-button p strong");
+
+const maxClickUpgradeCount = 50;
+const clickValueUpgradeAmount = 0.5;
+let clickUpgradeCount = 0;
+
+clickUpgradeButton.addEventListener("click", () => {
+    if (clickUpgradeCount >= maxClickUpgradeCount) return;
+
+    const cost = Math.floor(10 * Math.pow(1.5, clickUpgradeCount));
+
+    if (meatballs >= cost) {
+        meatballs -= cost;
+        clickValue += clickValueUpgradeAmount;
+        displayMeatballCount();
+        clickUpgradeCount++;
+        clickUpgradeCostElement.textContent = Math.floor(10 * Math.pow(1.5, clickUpgradeCount));
+    }
+});console.log(cost);
