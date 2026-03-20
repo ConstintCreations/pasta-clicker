@@ -2,15 +2,45 @@ const clickButton = document.querySelector(".click-button");
 const meatballsText = document.querySelector(".meatball-count p");
 const multiplierText = document.querySelector(".meatball-count div strong");
 
+const clickButtonImage = clickButton.querySelector("img");
+
 let meatballs = 0;
 let forks = 0;
 let clickValue = 0.5;
 let multiplier = 1;
 
-clickButton.addEventListener("click", () => {
+const totalClickStats = document.querySelector(".total-clicks p");
+const totalUpgradesStats = document.querySelector(".total-upgrades-bought p");
+const totalJabsStats = document.querySelector(".total-fork-jabs p");
+const totalRebirthsStats = document.querySelector(".total-rebirts p");
+const totalSpentStats = document.querySelector(".total-meatballs-spent p");
+const totalGainedStats = document.querySelector(".total-meatballs-gained p");
+
+let stats = {
+    totalTimesClicked: 0,
+    totalUpgradesBought: 0,
+    totalForkJabs: 0,
+    totalRebirths: 0, 
+    totalMeatballsSpent: 0,
+    totalMeatballsGained: 0
+}
+
+document.addEventListener("contextmenu", (e)=>{
+    e.preventDefault();
+})
+
+clickButton.addEventListener("click", Click);
+clickButton.addEventListener("contextmenu", Click);
+
+function Click() {
     meatballs += clickValue*multiplier;
+    stats.totalMeatballsGained += clickValue*multiplier;
+    totalGainedStats.textContent = stats.totalMeatballsGained.toFixed(0);
     displayMeatballCount();
-});
+
+    stats.totalTimesClicked++;
+    totalClickStats.textContent = stats.totalTimesClicked.toFixed(0);
+}
 
 function displayMeatballCount() {
     meatballsText.textContent = meatballs.toFixed(0);
@@ -38,6 +68,10 @@ forkButton.addEventListener("click", () => {
 
     if (meatballs >= cost) {
         meatballs -= cost;
+        stats.totalMeatballsSpent += cost;
+        stats.totalUpgradesBought++;
+        totalSpentStats.textContent = stats.totalMeatballsSpent.toFixed(0);
+        totalUpgradesStats.textContent = stats.totalUpgradesBought.toFixed(0);
         displayMeatballCount();
     } else {
         return;
@@ -56,7 +90,7 @@ forkButton.addEventListener("click", () => {
     const newFork = document.createElement("div");
     newFork.classList.add("fork");
 
-    newFork.innerHTML = `<img src="images/fork.png" width="80px" alt="Fork" style="animation: ${forkOrbitTime}s orbit ${orbitDelay}s linear infinite, ${forkJabTime}s forkJab ${jabDelay}s linear infinite;">`;
+    newFork.innerHTML = `<img src="images/fork.png" width="80px" alt="Fork" draggable="false" style="animation: ${forkOrbitTime}s orbit ${orbitDelay}s linear infinite, ${forkJabTime}s forkJab ${jabDelay}s linear infinite;">`;
     
 
     forkElementContainer.appendChild(newFork);
@@ -64,7 +98,16 @@ forkButton.addEventListener("click", () => {
     if (forkInterval == null) {
         forkInterval = setInterval(() => {
             meatballs += forks*clickValue*multiplier;
+            stats.totalForkJabs += forks;
+            totalJabsStats.textContent = stats.totalForkJabs.toFixed(0);
+            stats.totalMeatballsGained += clickValue*multiplier;
+            totalGainedStats.textContent = stats.totalMeatballsGained.toFixed(0);
             displayMeatballCount();
+
+            clickButtonImage.classList.add("clicked");
+            setTimeout(() => {
+                clickButtonImage.classList.remove("clicked");
+            }, 125)
         }, 1000);
     }
 
@@ -88,6 +131,10 @@ clickUpgradeButton.addEventListener("click", () => {
 
     if (meatballs >= cost) {
         meatballs -= cost;
+        stats.totalMeatballsSpent += cost;
+        stats.totalUpgradesBought++;
+        totalSpentStats.textContent = stats.totalMeatballsSpent.toFixed(0);
+        totalUpgradesStats.textContent = stats.totalUpgradesBought.toFixed(0);
         clickValue += clickValueUpgradeAmount;
         displayMeatballCount();
         clickUpgradeCount++;
@@ -111,6 +158,10 @@ multiplierUpgradeButton.addEventListener("click", () => {
 
     if (meatballs >= cost) {
         meatballs -= cost;
+        stats.totalMeatballsSpent += cost;
+        stats.totalUpgradesBought++;
+        totalSpentStats.textContent = stats.totalMeatballsSpent.toFixed(0);
+        totalUpgradesStats.textContent = stats.totalUpgradesBought.toFixed(0);
         multiplier += multiplierValueUpgradeAmount;
         displayMultiplier();
         displayMeatballCount();
