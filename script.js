@@ -155,7 +155,7 @@ function loadGame() {
                             meatballs += forks*clickValue*multiplier;
                             stats.totalForkJabs += forks;
                             totalJabsStats.textContent = stats.totalForkJabs.toFixed(0);
-                            stats.totalMeatballsGained += clickValue*multiplier;
+                            stats.totalMeatballsGained += forks*clickValue*multiplier;
                             totalGainedStats.textContent = stats.totalMeatballsGained.toFixed(0);
                             displayMeatballCount();
 
