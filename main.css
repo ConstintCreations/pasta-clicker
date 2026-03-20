@@ -196,13 +196,20 @@ img {
     font-size: 1.5em;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold;
-    padding: 10px 40px 0px 20px;
+    padding: 10px 40px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.stats>div {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.stats>div {
+.stats>div>div {
     display: flex;
     justify-content: space-between;
 }
@@ -230,7 +237,8 @@ img {
     background-color: #dfcbad;
 }
 
-.stats>strong {
+.rebirth-upgrades-needed-full {
+    margin-top: 10px;
     display: flex;
     gap: 40px;
     justify-content: center;

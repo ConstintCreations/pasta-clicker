@@ -72,7 +72,7 @@ function checkRebirthConditions() {
     document.querySelector(".rebirth-button").textContent = "Rebirth: +" + rebirthMultiplierGain.toFixed(2) + "%";
     if (runUpgradesNeeded <= 0) {
         rebirthEnabled = true;
-        document.querySelector(".stats strong").classList.add("noshow");
+        document.querySelector(".rebirth-upgrades-needed-full").classList.add("noshow");
         document.querySelector(".rebirth-button").classList.remove("disabled");
     }
 }
@@ -83,7 +83,7 @@ document.querySelector(".rebirth-button").addEventListener("click", () => {
     runUpgradesNeeded = 55;
     stats.totalRebirths++;
     totalRebirthsStats.textContent = stats.totalRebirths;
-    document.querySelector(".stats strong").classList.remove("noshow");
+    document.querySelector(".rebirth-upgrades-needed-full").classList.remove("noshow");
     document.querySelector(".rebirth-button").classList.add("disabled");
     document.querySelector(".rebirth-upgrades-needed").textContent = "55";
 
