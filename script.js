@@ -9,7 +9,7 @@ let forks = 0;
 let clickValue = 0.5;
 let multiplier = 1;
 
-let runUpgradesNeeded = 55;
+let runUpgradesNeeded = 40;
 let rebirthMultiplierGain = 0;
 let rebirthEnabled = false;
 
@@ -80,12 +80,12 @@ function checkRebirthConditions() {
 document.querySelector(".rebirth-button").addEventListener("click", () => {
     if (document.querySelector(".rebirth-button").classList.contains("disabled")) return;
 
-    runUpgradesNeeded = 55;
+    runUpgradesNeeded = 40;
     stats.totalRebirths++;
     totalRebirthsStats.textContent = stats.totalRebirths;
     document.querySelector(".rebirth-upgrades-needed-full").classList.remove("noshow");
     document.querySelector(".rebirth-button").classList.add("disabled");
-    document.querySelector(".rebirth-upgrades-needed").textContent = "55";
+    document.querySelector(".rebirth-upgrades-needed").textContent = "40";
 
     multiplier += rebirthMultiplierGain;
     rebirthMultiplierGain = 0;
