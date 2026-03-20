@@ -207,6 +207,39 @@ img {
     justify-content: space-between;
 }
 
+.rebirth-button {
+    margin-top: 50px;
+    color: saddlebrown;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+    border-radius: 50px;
+    border: 5px solid burlywood;
+    background-color: blanchedalmond;
+    cursor: pointer;
+    padding: 10px 0px;
+}
+
+.rebirth-button:active {
+    scale: 0.95;
+}
+
+.disabled {
+    color: #6b2500;
+    border: 5px solid #be9867;
+    background-color: #dfcbad;
+}
+
+.stats>strong {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.noshow {
+    display: none;
+}
+
 @keyframes floatRotate {
 
     0%,
