@@ -29,9 +29,163 @@ let stats = {
     totalMeatballsGained: 0
 }
 
+const clickUpgradeButton = document.querySelector(".buy-click-upgrade-button");
+const clickUpgradeCostElement = document.querySelector(".buy-click-upgrade-button p strong");
+const clickValueOwnedCountElement = document.querySelector(".buy-click-upgrade-button div div h3");
+
+const maxClickUpgradeCount = 50;
+const clickValueUpgradeAmount = 0.5;
+
+const forkButton = document.querySelector(".buy-fork-button");
+const forkElementContainer = document.querySelector(".fork-container");
+const buyForkCostElement = document.querySelector(".buy-fork-button p strong");
+const forkOwnedCountElement = document.querySelector(".buy-fork-button div div h3");
+
+const maxForks = 40;
+const forkOrbitTime = 8;
+const forkJabTime = 1;
+
+let forkInterval = null;
+
+let clickUpgradeCount = 1;
+let multiplierUpgradeCount = 0;
+
+const multiplierUpgradeButton = document.querySelector(".buy-multiplier-upgrade-button");
+const multiplierUpgradeCostElement = document.querySelector(".buy-multiplier-upgrade-button p strong");
+const multiplierUpgradeOwnedCountElement = document.querySelector(".buy-multiplier-upgrade-button div div h3");
+
+const maxMultiplierUpgradeCount = 20;
+const multiplierValueUpgradeAmount = 0.1;
+
+setInterval(saveGame, 30000);
+
+loadGame();
+
+function saveGame() {
+    const gameData = {
+        meatballs: meatballs,
+        forks: forks,
+        clickValue: clickValue,
+        multiplier: multiplier,
+        rebirthEnabled: rebirthEnabled,
+        rebirthMultiplierGain: rebirthMultiplierGain,
+        runUpgradesNeeded: runUpgradesNeeded,
+        stats: stats,
+        clickUpgradeCount: clickUpgradeCount,
+        multiplierUpgradeCount: multiplierUpgradeCount
+    };
+
+    localStorage.setItem('pastaClickerSave', JSON.stringify(gameData));
+
+    document.querySelector(".save-indicator").classList.remove("noshow");
+
+    setTimeout(() => {
+        document.querySelector(".save-indicator").classList.add("noshow");
+    }, 1000);
+}
+
+function loadGame() {
+    const savedData = localStorage.getItem('pastaClickerSave');
+    if (savedData) {
+        const gameData = JSON.parse(savedData);
+        meatballs = gameData.meatballs;
+        forks = gameData.forks;
+        clickValue = gameData.clickValue;
+        multiplier = gameData.multiplier;
+        rebirthEnabled = gameData.rebirthEnabled;
+        rebirthMultiplierGain = gameData.rebirthMultiplierGain;
+        runUpgradesNeeded = gameData.runUpgradesNeeded;
+        stats = gameData.stats;
+        clickUpgradeCount = gameData.clickUpgradeCount;
+        multiplierUpgradeCount = gameData.multiplierUpgradeCount;
+
+        displayMeatballCount();
+        displayMultiplier();
+
+        totalGainedStats.textContent = stats.totalMeatballsGained.toFixed(0);
+        totalClickStats.textContent = stats.totalTimesClicked.toFixed(0);
+        totalRebirthsStats.textContent = stats.totalRebirths.toFixed(0);
+        totalSpentStats.textContent = stats.totalMeatballsSpent.toFixed(0);
+        totalUpgradesStats.textContent = stats.totalUpgradesBought.toFixed(0);
+        totalJabsStats.textContent = stats.totalForkJabs.toFixed(0);
+        
+        document.querySelector(".rebirth-button").textContent = "Rebirth: +" + rebirthMultiplierGain.toFixed(2) + "%";
+        document.querySelector(".rebirth-upgrades-needed").textContent = runUpgradesNeeded;
+
+        if (rebirthEnabled) {
+            document.querySelector(".rebirth-upgrades-needed-full").classList.add("noshow");
+            document.querySelector(".rebirth-button").classList.remove("disabled");   
+        }
+
+        clickUpgradeCostElement.textContent = Math.floor((6+2/3) * Math.pow(1.5, clickUpgradeCount));
+        clickValueOwnedCountElement.textContent = clickUpgradeCount + "/" + maxClickUpgradeCount;
+
+        buyForkCostElement.textContent = Math.floor(50 * Math.pow(1.75, forks));
+        forkOwnedCountElement.textContent = forks + "/" + maxForks;
+
+        multiplierUpgradeCostElement.textContent = Math.floor(100 * Math.pow(2, multiplierUpgradeCount));
+        multiplierUpgradeOwnedCountElement.textContent = multiplierUpgradeCount + "/" + maxMultiplierUpgradeCount;
+
+        if (forks > 0) {
+
+            if (forkInterval == null) {
+                for (let i = 0; i < forks; i++) {
+
+                    let orbitDelay = 0;
+                    let jabDelay = -0.85;
+                    if (i > 0) {
+                        const fork = document.querySelectorAll(".fork img")[0];
+                        const currentOrbitAnimationTime = fork.getAnimations()[0].currentTime;
+                        orbitDelay = (forkOrbitTime - (currentOrbitAnimationTime/1000) + (i * (forkOrbitTime/maxForks)))%(forkOrbitTime) - forkOrbitTime;
+
+                        const currentJabAnimationTime = fork.getAnimations()[1].currentTime;
+                        jabDelay = (forkJabTime - (currentJabAnimationTime/1000) + 0.15)%(forkJabTime) - forkJabTime;
+                    }
+
+                    const newFork = document.createElement("div");
+                    newFork.classList.add("fork");
+
+                    newFork.innerHTML = `<img src="images/fork.png" width="80px" alt="Fork" draggable="false" style="animation: ${forkOrbitTime}s orbit ${orbitDelay}s linear infinite, ${forkJabTime}s forkJab ${jabDelay}s linear infinite;">`;
+                    
+
+                    forkElementContainer.appendChild(newFork);
+
+                    if (!forkInterval) {
+                        forkInterval = setInterval(() => {
+                            meatballs += forks*clickValue*multiplier;
+                            stats.totalForkJabs += forks;
+                            totalJabsStats.textContent = stats.totalForkJabs.toFixed(0);
+                            stats.totalMeatballsGained += clickValue*multiplier;
+                            totalGainedStats.textContent = stats.totalMeatballsGained.toFixed(0);
+                            displayMeatballCount();
+
+                            clickButtonImage.classList.add("clicked");
+                            setTimeout(() => {
+                                clickButtonImage.classList.remove("clicked");
+                            }, 125)
+                        }, 1000);
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+window.addEventListener("beforeunload", () => {
+    saveGame();
+});
+
 document.addEventListener("contextmenu", (e)=>{
     e.preventDefault();
-})
+});
+
+document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+        saveGame();
+    }
+});
 
 clickButton.addEventListener("click", Click);
 clickButton.addEventListener("contextmenu", Click);
@@ -54,17 +208,6 @@ function displayMultiplier() {
     multiplierText.textContent = "x" + multiplier.toFixed(2);
 }
 
-const forkButton = document.querySelector(".buy-fork-button");
-const forkElementContainer = document.querySelector(".fork-container");
-const buyForkCostElement = document.querySelector(".buy-fork-button p strong");
-const forkOwnedCountElement = document.querySelector(".buy-fork-button div div h3");
-
-const maxForks = 40;
-const forkOrbitTime = 8;
-const forkJabTime = 1;
-
-let forkInterval = null;
-
 function checkRebirthConditions() {
     runUpgradesNeeded--;
     document.querySelector(".rebirth-upgrades-needed").textContent = runUpgradesNeeded;
@@ -82,7 +225,7 @@ document.querySelector(".rebirth-button").addEventListener("click", () => {
 
     runUpgradesNeeded = 40;
     stats.totalRebirths++;
-    totalRebirthsStats.textContent = stats.totalRebirths;
+    totalRebirthsStats.textContent = stats.totalRebirths.toFixed(0);
     document.querySelector(".rebirth-upgrades-needed-full").classList.remove("noshow");
     document.querySelector(".rebirth-button").classList.add("disabled");
     document.querySelector(".rebirth-upgrades-needed").textContent = "40";
@@ -176,14 +319,6 @@ forkButton.addEventListener("click", () => {
     buyForkCostElement.textContent = Math.floor(50 * Math.pow(1.75, forks));
 }); 
 
-const clickUpgradeButton = document.querySelector(".buy-click-upgrade-button");
-const clickUpgradeCostElement = document.querySelector(".buy-click-upgrade-button p strong");
-const clickValueOwnedCountElement = document.querySelector(".buy-click-upgrade-button div div h3");
-
-const maxClickUpgradeCount = 50;
-const clickValueUpgradeAmount = 0.5;
-let clickUpgradeCount = 1;
-
 clickUpgradeButton.addEventListener("click", () => {
     if (clickUpgradeCount >= maxClickUpgradeCount) return;
 
@@ -203,14 +338,6 @@ clickUpgradeButton.addEventListener("click", () => {
         clickUpgradeCostElement.textContent = Math.floor((6+2/3) * Math.pow(1.5, clickUpgradeCount));
     }
 });
-
-const multiplierUpgradeButton = document.querySelector(".buy-multiplier-upgrade-button");
-const multiplierUpgradeCostElement = document.querySelector(".buy-multiplier-upgrade-button p strong");
-const multiplierUpgradeOwnedCountElement = document.querySelector(".buy-multiplier-upgrade-button div div h3");
-
-const maxMultiplierUpgradeCount = 20;
-const multiplierValueUpgradeAmount = 0.1;
-let multiplierUpgradeCount = 0;
 
 multiplierUpgradeButton.addEventListener("click", () => {
     if (multiplierUpgradeCount >= maxMultiplierUpgradeCount) return;

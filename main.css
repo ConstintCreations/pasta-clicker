@@ -27,6 +27,9 @@ body {
 
 .content {
     grid-area: "content";
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .shop {
@@ -246,6 +249,15 @@ img {
 
 .noshow {
     display: none;
+}
+
+.save-indicator {
+    font-size: 3em;
+    color: saddlebrown;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 30px;
 }
 
 @keyframes floatRotate {
